@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+FILE=keys/ssl/selfsigned.crt
+if [ -f "$FILE" ]; then
+    echo "key file $FILE exists."
+else
+    echo "key file $FILE not exists. Generating ..."
+    cat >> openssl.cnf <<EOF
+[ req ]
+prompt = no
+distinguished_name = req_distinguished_name
+
+[ req_distinguished_name ]
+C = ES
+ST = Barcelona
+L = Vilassar de Mar
+O = Shade, Inc
+OU = Core development
+CN = Shade International
+emailAddress = avm@sh-inc.ru
+EOF
+openssl req -x509 -config openssl.cnf -nodes -days 365 -newkey rsa:2048 -keyout ./keys/ssl/selfsigned.key -out ./keys/ssl/selfsigned.crt
+fi
+
+
+./manage.py collectstatic --no-input
+./manage.py migrate --no-input
+
+exec "$@"

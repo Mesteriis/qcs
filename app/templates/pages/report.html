@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block content %}
+  <div class="card">
+    {% if report.result %}
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">
+
+            <div>{% translate 'Error code' %}</div>
+            <div>{% translate 'String #' %}</div>
+          </th>
+          <th scope="col">
+            <div>{% translate 'Error description' %}</div>
+            <div>{% translate 'String content' %}</div>
+          </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for error in report.result %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <th style="width: 100px">
+              <div>{{ error.error.code }} </div>
+              <div>{{ error.number }} </div>
+            </th>
+            <td>
+              <div>{{ error.error.string | title }}</div>
+              <div>{{ error.line }}</div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      Все хорошо
+    {% endif %}
+  </div>
+  <style>
+    .even {
+      background-color: rgba(0, 0, 0, .1) !important;
+    }
+
+    .E {
+      background-color: rgba(215, 197, 124, 0.1) !important;
+    }
+
+    .F {
+      background-color: rgba(89, 213, 106, 0.1) !important;
+    }
+  </style>
+{% endblock %}

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+export CELERY_BROKER_URL=redis://redis:6379/0
+exec celery \
+    -A config.celery_app \
+    -b "${CELERY_BROKER_URL}" \
+    flower
+

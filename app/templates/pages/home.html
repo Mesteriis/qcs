@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+    <div id="app">
+      <h5>
+        {% translate "Submit for review" %}
+      </h5>
+      <div class="mb-3">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form | crispy }}
+          <button type="submit" class="btn btn-outline-secondary w-100">{% translate "Send" %}</button>
+        </form>
+      </div>
+      <ul class="list-group">
+        <li v-for="file in files"
+            class="list-group-item "
+            :class=" {
+            'list-group-item-warning' : file.status === 'f',
+            'list-group-item-success' : file.status === 's'
+            }"
+        >
+          <div class="d-flex justify-content-between">
+            <div>
+              <div>
+                [[file.file_name]]
+              </div>
+              <div>
+                upload: [[file.created]]
+              </div>
+            </div>
+            <div class="d-flex">
+              <a
+                v-if="file.status !== 'new'"
+                :href="'/report/'+ file.pk"
+                class="btn btn-outline-primary m-2"
+                type="button">
+                {% translate "Report" %}
+              </a>
+              <button
+                v-if="file.status === 'new'"
+                :file_pk="file.pk"
+                :onclick="processing"
+                class="btn btn-outline-success m-2 btn-processing"
+                type="button">
+                {% translate "Verify" %}
+              </button>
+              <button
+                class="btn btn-danger m-2"
+                :file_pk="file.pk"
+                :onclick="deleteFile"
+                type="button">
+                {% translate "Delete" %}
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script defer>
+
+      const {createApp, ref} = Vue;
+      const app = Vue.createApp({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data() {
+          return {
+            files: [],
+          }
+        },
+        created() {
+          this.getFiles()
+          setInterval(() => { this.getFiles()}, 10000, this);
+        },
+        methods: {
+          getFiles() {
+            axios({
+              method: 'get',
+              url: '/api/v1/files/',
+            }).then((response) => {
+              this.files = response.data;
+            });
+          },
+          processing(event) {
+            const file_pk = event.target.getAttribute("file_pk")
+            axios({
+              method: 'post',
+              url: `/api/v1/files/${file_pk}/processing/`,
+              headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+              }
+            }).then((response) => {
+              this.getFiles()
+            });
+          },
+          deleteFile(event) {
+            const file_pk = event.target.getAttribute("file_pk")
+            axios({
+              method: 'delete',
+              url: `/api/v1/files/${file_pk}/`,
+              headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+              }
+            }).then((response) => {
+              this.getFiles()
+            });
+          },
+        },
+      });
+      app.mount('#app')
+    </script>
+  {% endif %}
+  <style>
+    #div_id_file label {
+      display: none;
+    }
+  </style>
+{% endblock %}
