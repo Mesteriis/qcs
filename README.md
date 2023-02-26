@@ -2,46 +2,51 @@
 
 Code quality service aka test task for skypro
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+## Dependencies
 
-## Settings
+- Poetry:
 
-Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
+Install (Linux, macOS, Windows (WSL)):
+
+``` bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+Windows (Powershell):
+
+``` powerShell
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+```
 
 ## Basic Commands
 
+### Init local server
+
+For local reversal, use the command
+
+        $ make init 
+
+Local services will be started in a docker environment (postgres, redis), a poetry-based virtual environment will be
+deployed, and a user avm q1w2e3w2e3 will be created
+
 ### Setting Up Your Users
 
--   To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "
+  Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into
+  your browser. Now the user's email should be verified and ready to go.
 
--   To create a **superuser account**, use this command:
+- To create a **superuser account**, use this command:
 
-        $ python manage.py createsuperuser
+  ``` python
+  python manage.py createsuperuser
+  ```
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+  ``` bash
+  make create_su_user
+  ```
 
-### Type checks
-
-Running type checks with mypy:
-
-    $ mypy code_quality_service
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
+For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar),
+so that you can see how the site behaves for both kinds of users.
 
 ### Celery
 
@@ -54,12 +59,12 @@ cd code_quality_service
 celery -A config.celery_app worker -l info
 ```
 
-Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the same folder with *manage.py*, you should be right.
+or
 
-## Deployment
+``` bash
+make start_local_celery
+```
 
-The following details how to deploy this application.
+Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the
+same folder with *manage.py*, you should be right.
 
-### Docker
-
-See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).

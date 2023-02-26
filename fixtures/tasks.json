@@ -1,0 +1,81 @@
+[
+{
+    "model": "django_celery_beat.intervalschedule",
+    "pk": 1,
+    "fields": {
+        "every": 15,
+        "period": "minutes"
+    }
+},
+{
+    "model": "django_celery_beat.intervalschedule",
+    "pk": 2,
+    "fields": {
+        "every": 20,
+        "period": "minutes"
+    }
+},
+{
+    "model": "django_celery_beat.periodictasks",
+    "pk": 1,
+    "fields": {
+        "last_update": "2023-02-26T21:15:27.035Z"
+    }
+},
+{
+    "model": "django_celery_beat.periodictask",
+    "pk": 1,
+    "fields": {
+        "name": "Check files",
+        "task": "reports.tasks.check_files",
+        "interval": 1,
+        "crontab": null,
+        "solar": null,
+        "clocked": null,
+        "args": "[]",
+        "kwargs": "{}",
+        "queue": null,
+        "exchange": null,
+        "routing_key": null,
+        "headers": "{}",
+        "priority": null,
+        "expires": null,
+        "expire_seconds": null,
+        "one_off": false,
+        "start_time": null,
+        "enabled": true,
+        "last_run_at": null,
+        "total_run_count": 0,
+        "date_changed": "2023-02-26T21:14:57.832Z",
+        "description": "Check code files"
+    }
+},
+{
+    "model": "django_celery_beat.periodictask",
+    "pk": 2,
+    "fields": {
+        "name": "Notify",
+        "task": "notifications.tasks.sent_mail_notify",
+        "interval": 2,
+        "crontab": null,
+        "solar": null,
+        "clocked": null,
+        "args": "[]",
+        "kwargs": "{}",
+        "queue": null,
+        "exchange": null,
+        "routing_key": null,
+        "headers": "{}",
+        "priority": null,
+        "expires": null,
+        "expire_seconds": null,
+        "one_off": false,
+        "start_time": null,
+        "enabled": true,
+        "last_run_at": null,
+        "total_run_count": 0,
+        "date_changed": "2023-02-26T21:15:27.033Z",
+        "description": ""
+    }
+}
+]
