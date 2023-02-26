@@ -1,7 +1,7 @@
 import contextlib
 import subprocess
 from datetime import datetime
-from typing import List, Optional
+
 
 from django.utils.timezone import utc
 
@@ -23,7 +23,7 @@ class CQService:
         return cls.__build_report(file, cls.__check_file(file.file.path))
 
     @classmethod
-    def __build_report(cls, file: CodeFile, report: Optional[str] = None) -> Report:
+    def __build_report(cls, file: CodeFile, report: str | None = None) -> Report:
         with contextlib.suppress(Exception):
             file.report.delete()
         data = {
@@ -56,12 +56,12 @@ class CQService:
         return Report.objects.create(**data)
 
     @staticmethod
-    def __read_file(file_path: str) -> List[str]:
+    def __read_file(file_path: str) -> list[str]:
         with open(file_path) as f:
             return f.readlines()
 
     @staticmethod
-    def __extract_fail_str_indices(text: List[str]) -> list[int]:
+    def __extract_fail_str_indices(text: list[str]) -> list[int]:
         return [int(el[4 : el[4:].index(":") + 4]) for el in text if el]  # noqa E203
 
     @staticmethod

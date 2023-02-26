@@ -8,7 +8,7 @@ from django.db import models
 
 
 def file_handler(instance, filename):
-    return f'code_files/user_{instance.user.id}/{datetime.now().timestamp()}/{filename}'
+    return f"code_files/user_{instance.user.id}/{datetime.now().timestamp()}/{filename}"
 
 
 class CodeFile(models.Model):
@@ -17,14 +17,14 @@ class CodeFile(models.Model):
         get_user_model(),
         verbose_name="user",
         on_delete=models.CASCADE,
-        null=False
+        null=False,
     )
 
     file = models.FileField(
         upload_to=file_handler,
         validators=[
-            FileExtensionValidator(allowed_extensions=["py"])
-        ]
+            FileExtensionValidator(allowed_extensions=["py"]),
+        ],
     )
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 
@@ -32,4 +32,4 @@ class CodeFile(models.Model):
     def status(self):
         with contextlib.suppress(Exception):
             return self.report.status
-        return 'new'
+        return "new"

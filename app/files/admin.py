@@ -8,7 +8,7 @@ class ReportsInLine(admin.TabularInline):
     model = Report
     extra = 0
     fields = [
-        'result'
+        "result",
     ]
 
     def has_add_permission(self, request, obj):

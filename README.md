@@ -24,7 +24,7 @@ Windows (Powershell):
 
 For local reversal, use the command
 
-        $ make init 
+        $ make init
 
 Local services will be started in a docker environment (postgres, redis), a poetry-based virtual environment will be
 deployed, and a user avm q1w2e3w2e3 will be created
@@ -67,4 +67,3 @@ make start_local_celery
 
 Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the
 same folder with *manage.py*, you should be right.
-
